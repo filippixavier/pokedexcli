@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
+
+	"github.com/filippixavier/pokedexcli/internal/pokeapi"
 )
 
 func cleanInput(text string) []string {
@@ -14,6 +17,8 @@ func cleanInput(text string) []string {
 func startREPL() {
 	reader := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
+
+	config := pokeapi.NewClient(5 * time.Second)
 
 	for {
 		fmt.Print("Pokedex > ")
@@ -25,7 +30,9 @@ func startREPL() {
 		}
 
 		if cmd, exist := commands[input[0]]; exist {
-			cmd.callback()
+			if err := cmd.callback(&config); err != nil {
+				fmt.Println(err)
+			}
 		} else {
 			fmt.Println("Unknown command")
 		}
