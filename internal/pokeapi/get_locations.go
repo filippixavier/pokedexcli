@@ -3,16 +3,24 @@ package pokeapi
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 )
 
-func (c *Client) GetLocations(pageURL string) (locationsResponse, error) {
+func (c *Client) GetLocations(pageURL *string) (locationsResponse, error) {
+	var locations locationsResponse
+
 	url := baseURL + "/location-area"
 
-	if pageURL != "" {
-		url = pageURL
+	if pageURL != nil {
+		url = *pageURL
 	}
 
-	fmt.Printf("Url: %s", url)
+	if val, ok := c.cache.Get(url); ok {
+		if err := json.Unmarshal(val, &locations); err != nil {
+			return locationsResponse{}, err
+		}
+		return locations, nil
+	}
 
 	res, err := c.httpClient.Get(url)
 
@@ -22,12 +30,17 @@ func (c *Client) GetLocations(pageURL string) (locationsResponse, error) {
 
 	defer res.Body.Close()
 
-	decoder := json.NewDecoder(res.Body)
-	var locations locationsResponse
+	data, err := io.ReadAll(res.Body)
 
-	if err := decoder.Decode(&locations); err != nil {
-		return locationsResponse{}, fmt.Errorf("error when parsing response: %w", err)
+	if err != nil {
+		return locationsResponse{}, err
 	}
+
+	if err := json.Unmarshal(data, &locations); err != nil {
+		return locationsResponse{}, err
+	}
+
+	c.cache.Add(url, data)
 
 	return locations, nil
 }

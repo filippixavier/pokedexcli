@@ -23,7 +23,7 @@ func commandMapF(config *pokeapi.Client) error {
 }
 
 func commandMapBack(config *pokeapi.Client) error {
-	if config.Previous == "" {
+	if config.Previous == nil {
 		return errors.New("you are on the first page")
 	}
 	locations, err := config.GetLocations(config.Previous)
