@@ -5,7 +5,7 @@ import "github.com/filippixavier/pokedexcli/internal/pokeapi"
 type cliCommand struct {
 	name        string
 	description string
-	callback    func(*pokeapi.Client) error
+	callback    func(*pokeapi.Client, ...string) error
 }
 
 func getCommands() map[string]cliCommand {
@@ -29,6 +29,11 @@ func getCommands() map[string]cliCommand {
 			name:        "mapb",
 			description: "display the previous 20 locations",
 			callback:    commandMapBack,
+		},
+		"explore": {
+			name:        "explore",
+			description: "display the list of pokemon that can be encouter at the given location",
+			callback:    commandExploreLocation,
 		},
 	}
 	return commands

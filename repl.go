@@ -30,7 +30,8 @@ func startREPL() {
 		}
 
 		if cmd, exist := commands[input[0]]; exist {
-			if err := cmd.callback(&config); err != nil {
+			params := input[1:]
+			if err := cmd.callback(&config, params...); err != nil {
 				fmt.Println(err)
 			}
 		} else {

@@ -6,7 +6,7 @@ import (
 	"github.com/filippixavier/pokedexcli/internal/pokeapi"
 )
 
-func commandHelp(config *pokeapi.Client) error {
+func commandHelp(config *pokeapi.Client, _params ...string) error {
 	fmt.Println("Usage:")
 	fmt.Println()
 
