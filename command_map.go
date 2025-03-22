@@ -3,12 +3,10 @@ package main
 import (
 	"errors"
 	"fmt"
-
-	"github.com/filippixavier/pokedexcli/internal/pokeapi"
 )
 
-func commandMapF(config *pokeapi.Client, _params ...string) error {
-	locations, err := config.GetLocations(config.Next)
+func commandMapF(config *Config, _params ...string) error {
+	locations, err := config.Client.GetLocations(config.Client.Next)
 	if err != nil {
 		return err
 	}
@@ -17,16 +15,16 @@ func commandMapF(config *pokeapi.Client, _params ...string) error {
 		fmt.Println(location.Name)
 	}
 
-	config.Next = locations.Next
-	config.Previous = locations.Previous
+	config.Client.Next = locations.Next
+	config.Client.Previous = locations.Previous
 	return nil
 }
 
-func commandMapBack(config *pokeapi.Client, _params ...string) error {
-	if config.Previous == nil {
+func commandMapBack(config *Config, _params ...string) error {
+	if config.Client.Previous == nil {
 		return errors.New("you are on the first page")
 	}
-	locations, err := config.GetLocations(config.Previous)
+	locations, err := config.Client.GetLocations(config.Client.Previous)
 	if err != nil {
 		return err
 	}
@@ -35,7 +33,7 @@ func commandMapBack(config *pokeapi.Client, _params ...string) error {
 		fmt.Println(location.Name)
 	}
 
-	config.Next = locations.Next
-	config.Previous = locations.Previous
+	config.Client.Next = locations.Next
+	config.Client.Previous = locations.Previous
 	return nil
 }

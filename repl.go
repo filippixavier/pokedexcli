@@ -10,6 +10,11 @@ import (
 	"github.com/filippixavier/pokedexcli/internal/pokeapi"
 )
 
+type Config struct {
+	Client  pokeapi.Client
+	Pokedex map[string]pokeapi.PokemonInfo
+}
+
 func cleanInput(text string) []string {
 	return strings.Fields(strings.ToLower(text))
 }
@@ -18,7 +23,10 @@ func startREPL() {
 	reader := bufio.NewScanner(os.Stdin)
 	commands := getCommands()
 
-	config := pokeapi.NewClient(5 * time.Second)
+	config := Config{
+		Client:  pokeapi.NewClient(5 * time.Second),
+		Pokedex: make(map[string]pokeapi.PokemonInfo),
+	}
 
 	for {
 		fmt.Print("Pokedex > ")

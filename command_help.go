@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
-
-	"github.com/filippixavier/pokedexcli/internal/pokeapi"
 )
 
-func commandHelp(config *pokeapi.Client, _params ...string) error {
+func commandHelp(config *Config, _params ...string) error {
 	fmt.Println("Usage:")
 	fmt.Println()
 

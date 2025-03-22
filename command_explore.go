@@ -3,16 +3,14 @@ package main
 import (
 	"errors"
 	"fmt"
-
-	"github.com/filippixavier/pokedexcli/internal/pokeapi"
 )
 
-func commandExploreLocation(config *pokeapi.Client, params ...string) error {
+func commandExploreLocation(config *Config, params ...string) error {
 	if len(params) == 0 {
 		return errors.New("missing location argument")
 	}
 
-	pokemons, err := config.GetPokemonAtLocation(params[0])
+	pokemons, err := config.Client.GetPokemonAtLocation(params[0])
 
 	if err != nil {
 		return err
