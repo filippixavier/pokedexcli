@@ -24,6 +24,7 @@ func commandCatch(config *Config, params ...string) error {
 	if pokethrow < 40 {
 		fmt.Printf("%s caugth!\n", pokemon.Name)
 		config.Pokedex[pokemon.Name] = pokemon
+		fmt.Println("You may now inspect if with the inspect command")
 	} else {
 		fmt.Println("Too bad...try again!")
 	}
